@@ -1,25 +1,46 @@
 import "./App.css";
+import Container from "./components/container/Container";
+import MessageList from "./components/messages/MessageList";
 
 function App() {
-  let string = "afk";
+  const isAdult = true;
+  const url = "https://images.prom.ua/1065621053_w600_h600_1065621053.jpg";
 
-  const img =
-    "https://cakeshop.com.ua/images/AcpSe7kFpmzMfgJUwhyXbNbja_gwkleunua5ZVM9jTQ/h:5000/bG9jYWw/6Ly8vY2FrZXNob3AuY29tLnVhL3B1YmxpY19odG1sL3N0b3JhZ2UvYXBwL3B1YmxpYy9pbWcvcHJvZHVjdC81NzEzXzEuanBn";
-
-  const arr = [1, 2, 3];
-  let isAdult = false;
+  const unreadMessages = ["asd", "qwe", "zxc"];
+  // const unreadMessages = [
+  //   { id: 1, message: "Привіт" },
+  //   { id: 2, message: "ПР" },
+  //   { id: 3, message: "дшфх" },
+  // ];
   return (
-    <>
-      <div style={{ backgroundColor: "red" }}>{2 + 2}</div>
-      <p>{string}</p>
-      {isAdult && <p>Nope</p>}
-      <img src={img} alt="" />
+    <Container>
+      {isAdult && <p>Lorem10</p>}
       <ul>
-        {arr.map((number, index) => (
-          <li key={index}>{number}</li>
-        ))}
+        <li>
+          <img src={url && "https://picsum.photos/200/300"} alt="" />
+        </li>
+        <li>
+          <a href=""></a>
+        </li>
+        <li>3</li>
+        {/* {unreadMessages.length > 0 && (
+          <li>You have {unreadMessages.length} unread messages</li>
+        )} */}
       </ul>
-    </>
+
+      <MessageList messages={unreadMessages} />
+      {/* {unreadMessages.length > 0 ? (
+        <li>You have {unreadMessages.length} unread messages</li>
+      ) : (
+        <li> "No unread messages"</li>
+      )}
+      <ul>
+        {unreadMessages.map(
+          (message, index) =>
+            message.length > 0 && <li key={index}>{message}</li>
+        )}
+      </ul> */}
+    </Container>
   );
 }
 
