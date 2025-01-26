@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import Button from "../../button/Button";
 
 const MessageItem = ({ message }) => {
@@ -9,6 +10,10 @@ const MessageItem = ({ message }) => {
       <Button text={"Виправити"} type={"re"} />
     </>
   );
+};
+
+MessageItem.propTypes = {
+  message: PropTypes.string.isRequired,
 };
 
 export default MessageItem;

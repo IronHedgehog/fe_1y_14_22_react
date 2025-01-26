@@ -28,7 +28,7 @@ function App() {
         )} */}
       </ul>
 
-      <MessageList messages={unreadMessages} />
+      <MessageList />
       {/* {unreadMessages.length > 0 ? (
         <li>You have {unreadMessages.length} unread messages</li>
       ) : (
