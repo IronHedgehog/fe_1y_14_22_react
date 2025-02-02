@@ -1,4 +1,5 @@
 import "./App.css";
+import Alert from "./components/alert/Alert";
 import Container from "./components/container/Container";
 import MessageList from "./components/messages/MessageList";
 
@@ -12,12 +13,47 @@ function App() {
   //   { id: 2, message: "ПР" },
   //   { id: 3, message: "дшфх" },
   // ];
+
+  const imgStylesRadius = {
+    display: "block",
+    width: 600,
+    height: 400,
+    padding: "12px 16px",
+    borderRadius: "50%",
+  };
+
+  const imgStylesKvadrat = {
+    display: "block",
+    width: 600,
+    height: 400,
+    padding: "12px 16px",
+    borderRadius: 50,
+  };
+
+  const imgs = "квадра";
   return (
     <Container>
+      <Alert outline={false} variant={"info"}>
+        Будь яке повідомлення
+      </Alert>
+      <Alert outline={true} variant={"error"}>
+        Будь яке повідомлення
+      </Alert>
+      <Alert outline={false} variant={"success"}>
+        Будь яке повідомлення
+      </Alert>
+      <Alert outline={true} variant={"warning"}>
+        Будь яке повідомлення
+      </Alert>
+
       {isAdult && <p>Lorem10</p>}
       <ul>
         <li>
-          <img src={url && "https://picsum.photos/200/300"} alt="" />
+          <img
+            style={imgs === "квадрат" ? imgStylesKvadrat : imgStylesRadius}
+            src={url && "https://picsum.photos/200/300"}
+            alt=""
+          />
         </li>
         <li>
           <a href=""></a>
