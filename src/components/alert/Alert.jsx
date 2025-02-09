@@ -14,11 +14,13 @@ import css from "./Alert.module.css";
 //       break;
 //   }
 // };
+
 // const alertStyle = {
 //   borderRadius: 10,
 //   margin: 5,
 //   padding: "10px 15px",
 // };
+
 const Alert = ({ children, variant, outline }) => {
   console.log(css);
   const classNames = [css.alert, css[variant]];

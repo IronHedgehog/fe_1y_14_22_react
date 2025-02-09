@@ -2,6 +2,7 @@ import "./App.css";
 import Alert from "./components/alert/Alert";
 import Container from "./components/container/Container";
 import MessageList from "./components/messages/MessageList";
+import StyleComponents from "./components/StyleComponents";
 
 function App() {
   const isAdult = true;
@@ -45,6 +46,7 @@ function App() {
       <Alert outline={true} variant={"warning"}>
         Будь яке повідомлення
       </Alert>
+      <StyleComponents />
 
       {isAdult && <p>Lorem10</p>}
       <ul>
