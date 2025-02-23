@@ -1,6 +1,7 @@
 import EventItem from "./eventItem/EventItem";
 
-const EventList = ({ events }) => {
+const EventList = ({ events, method }) => {
+  method();
   return (
     <ul>
       {events &&
