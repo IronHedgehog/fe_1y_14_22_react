@@ -1,102 +1,105 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { Component } from "react";
-import { object, string } from "yup";
+import { Component } from "react";
+import Filter from "./components/Filter";
+import Form from "./components/Form";
+import TodoList from "./components/TodoList";
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-const SignUpSchema = object({
-  firstName: string().min(2, "Занадто коротко").required("Обовʼязкове поле"),
-  lastName: string().min(2, "Занадто коротко").required("Обовʼязкове поле"),
-  email: string()
-    .min(6, "Мінімум 6 символів")
-    .email("Введи нормально")
-    .required("Обовʼязкове поле"),
-});
 class App extends Component {
+  state = {
+    todos: [
+      { id: 1, text: "do something", completed: true },
+      { id: 2, text: "do something2", completed: false },
+      { id: 3, text: "do something3", completed: true },
+      { id: 4, text: "do something4", completed: false },
+      { id: 5, text: "do something5", completed: false },
+    ],
+    filter: "",
+    error: false,
+  };
+  constructor() {
+    super();
+    this.addTodo = this.addTodo.bind(this);
+    this.addFilter = this.addFilter.bind(this);
+    this.deleteTodo = this.deleteTodo.bind(this);
+  }
+
+  componentDidMount() {
+    // http req, event, timer
+    const storageData = localStorage.getItem("todos");
+    console.log(storageData);
+    const parsedStorageData = JSON.parse(storageData);
+    console.log(parsedStorageData);
+
+    if (parsedStorageData) {
+      this.setState({
+        todos: parsedStorageData,
+      });
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.todos === this.state.todos) {
+      return false;
+    }
+    return true;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.todos !== prevState.todos) {
+      localStorage.setItem("todos", JSON.stringify(this.state.todos));
+    }
+  }
+
+  componentDidCatch() {
+    // слугує для обробки помилок та їх опрацювання
+    this.setState({ error: true });
+  }
+
+  addFilter(e) {
+    const { value } = e.target;
+    this.setState({ filter: value });
+  }
+
+  addTodo(newTodo) {
+    this.setState((prev) => ({
+      todos: [...prev.todos, newTodo],
+    }));
+  }
+
+  filterByText() {
+    const { todos, filter } = this.state;
+    console.log(
+      todos.filter((todo) =>
+        todo.text.toLowerCase().includes(filter.toLowerCase())
+      )
+    );
+  }
+
+  deleteTodo(id) {
+    this.setState((prevState) => ({
+      todos: prevState.todos.filter((todo) => todo.id !== id),
+    }));
+  }
+
   render() {
+    const filterElements = this.filterByText();
+    console.log(filterElements);
     return (
       <div>
-        <h1>Sign Up</h1>
-        <Formik
-          initialValues={{
-            firstName: "",
-            lastName: "",
-            email: "",
-          }}
-          validationSchema={SignUpSchema}
-          onSubmit={async (values) => {
-            await sleep(500);
-            alert(JSON.stringify(values, null, 2));
-          }}
-        >
-          {({ isSubmitting }) => (
-            <Form>
-              <label htmlFor="firstName">First Name</label>
-              <Field className="" name="firstName" placeholder="Jane" />
-              <ErrorMessage name="firstName" component="div" />
-
-              <label htmlFor="lastName">Last Name</label>
-              <Field name="lastName" placeholder="Doe" />
-              <ErrorMessage name="lastName" component="div" />
-
-              <label htmlFor="email">Email</label>
-              <Field name="email" placeholder="jane@acme.com" type="email" />
-              <ErrorMessage name="email" component="div" />
-
-              <button type="submit" disabled={isSubmitting}>
-                Submit
-              </button>
-            </Form>
-          )}
-        </Formik>
+        {this.state.error ? (
+          <h1>Сайт впав, приходьте пізніше</h1>
+        ) : (
+          <div>
+            <TodoList todos={this.state.todos} delete={this.deleteTodo} />
+            <Form addTodo={this.addTodo} />
+            <Filter
+              filterValue={this.state.filter}
+              addFilter={this.addFilter}
+            />
+          </div>
+        )}
       </div>
     );
   }
 }
 
 export default App;
-//  <Formik
-//         initialValues={{ nickname: "", email: "", password: "" }}
-//         onSubmit={(values, { setSubmitting }) => {
-//           console.log("Значення", values);
-//           setSubmitting(false);
-//         }}
-//       >
-//         {({ isSubmitting }) => {
-//           <Form>
-//             <Field as="" name="lastName">
-//               {({
-//                 field, // { name, value, onChange, onBlur }
-//                 form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-//                 meta,
-//               }) => (
-//                 <div>
-//                   <input type="text" placeholder="Email" {...field} />
-//                   {meta.touched && meta.error && (
-//                     <div className="error">{meta.error}</div>
-//                   )}
-//                 </div>
-//               )}
-//             </Field>
-
-//             <div>
-//               <label>Nickname</label>
-//               <Field type="text" name="nickname" placeholder="nickname" />
-//               <ErrorMessage />
-//             </div>
-//             <div>
-//               <label>email</label>
-//               <Field type="email" name="email" placeholder="Email" />
-//               <ErrorMessage />
-//             </div>
-//             <div>
-//               <label>password</label>
-//               <Field type="password" name="password" placeholder="password" />
-//               <ErrorMessage />
-//             </div>
-//             <button type="submit" disabled={isSubmitting}>
-//               Submit
-//             </button>
-//           </Form>;
-//         }}
-//       </Formik>
