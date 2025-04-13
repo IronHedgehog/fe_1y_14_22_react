@@ -1,32 +1,35 @@
 import { Component } from "react";
-import Modal from "./components/modal/Modal";
+import MyLoader from "./components/MyLoader";
+import NewsList from "./components/NewsList";
+import { fetchNews, takeRandomSource } from "./services/api";
 
 class App extends Component {
   state = {
-    isModalOpen: false,
+    news: [],
+    isLoading: false,
+    error: null,
   };
 
-  constructor() {
-    super();
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-  }
+  async componentDidMount() {
+    this.setState({ isLoading: true });
 
-  openModal() {
-    this.setState({ isModalOpen: true });
+    try {
+      const response = await fetchNews(takeRandomSource());
+      this.setState({ news: response });
+    } catch (error) {
+      this.setState({ error: error.message });
+    } finally {
+      this.setState({ isLoading: false });
+    }
   }
-  closeModal() {
-    this.setState({ isModalOpen: false });
-  }
+  // componentDidUpdate() {}
+
   render() {
     return (
       <>
-        <h1>Hello</h1>
-        <button onClick={this.openModal}>Відкриття модалки</button>
-        {this.state.isModalOpen && (
-          <Modal isOpen={this.state.isModalOpen} onClose={this.closeModal} />
-        )}
-        ;
+        {this.state.error && <div>{this.state.error}</div>}
+        {this.state.isLoading && <MyLoader />}
+        {this.state.news.length > 0 && <NewsList news={this.state.news} />}
       </>
     );
   }
