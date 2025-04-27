@@ -1,38 +1,34 @@
-import { Component } from "react";
-import MyLoader from "./components/MyLoader";
-import NewsList from "./components/NewsList";
-import { fetchNews, takeRandomSource } from "./services/api";
+import { useState } from "react";
 
-class App extends Component {
-  state = {
-    news: [],
-    isLoading: false,
-    error: null,
-  };
+const App = () => {
+  // state = {
+  //   news: [],
+  // };
+  const [counter, setCounter] = useState(10);
+  // const [] = useState([]);
+  // const [first, setfirst] = useState(second);
 
-  async componentDidMount() {
-    this.setState({ isLoading: true });
-
-    try {
-      const response = await fetchNews(takeRandomSource());
-      this.setState({ news: response });
-    } catch (error) {
-      this.setState({ error: error.message });
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  }
-  // componentDidUpdate() {}
-
-  render() {
-    return (
-      <>
-        {this.state.error && <div>{this.state.error}</div>}
-        {this.state.isLoading && <MyLoader />}
-        {this.state.news.length > 0 && <NewsList news={this.state.news} />}
-      </>
-    );
-  }
-}
+  return (
+    <div>
+      {counter}
+      <button
+        type="button"
+        onClick={(e) => {
+          setCounter(counter + 1);
+        }}
+      >
+        +
+      </button>
+      <button
+        type="button"
+        onClick={(e) => {
+          setCounter(counter - 1);
+        }}
+      >
+        -
+      </button>
+    </div>
+  );
+};
 
 export default App;
