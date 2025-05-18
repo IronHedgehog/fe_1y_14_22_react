@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import Compponent from "./Compponent";
+import { ThemeContext } from "./Context";
 
 const App = () => {
+  const [theme, setTheme] = useState("light");
   const [counter, setCounter] = useState(0);
   const timerRef = useRef(null);
 
@@ -12,7 +15,12 @@ const App = () => {
     return () => clearInterval(timerRef.current);
   }, []);
 
-  return <div>Час: {counter}</div>;
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <div>Час: {counter}</div>;
+      <Compponent />
+    </ThemeContext.Provider>
+  );
 };
 
 export default App;
