@@ -1,25 +1,20 @@
-import { useEffect, useRef, useState } from "react";
-import Compponent from "./Compponent";
-import { ThemeContext } from "./Context";
+import { useMemo, useState } from "react";
 
 const App = () => {
-  const [theme, setTheme] = useState("light");
-  const [counter, setCounter] = useState(0);
-  const timerRef = useRef(null);
+  const [planets, setPlanets] = useState(["Earth", "Mars", "Jupiter", "Venus"]);
+  const [query, setQuery] = useState("Earth");
 
-  useEffect(() => {
-    timerRef.current = setInterval(() => {
-      setCounter((count) => count + 1);
-    }, 1000);
-
-    return () => clearInterval(timerRef.current);
-  }, []);
+  const filteredPlanets = useMemo(
+    () => planets.filter((planet) => planet.includes(query)),
+    [planets, query]
+  );
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      <div>Час: {counter}</div>;
-      <Compponent />
-    </ThemeContext.Provider>
+    <div>
+      {filteredPlanets.map((planet) => (
+        <div key={planet}>{planet}</div>
+      ))}
+    </div>
   );
 };
 
